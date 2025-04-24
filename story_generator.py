@@ -1,8 +1,7 @@
-
 import openai
 
-# TEMPORARY TEST API KEY (Replace with your own key later)
-openai.api_key = "sk-x0sY...demo"
+# TEMP KEY for demo — replace with your own
+openai.api_key = "sk-..."  # Use your own key later
 
 def generate_story(mood):
     prompts = {
@@ -18,13 +17,15 @@ def generate_story(mood):
         "Philosophical": "Write a deep, thought-provoking story exploring the meaning of life."
     }
 
-    prompt = prompts.get(mood, "Write a story based on mood: " + mood)
-    
-    response = openai.ChatCompletion.create(
+    prompt = prompts.get(mood, f"Write a story based on mood: {mood}")
+
+    client = openai.OpenAI()
+
+    response = client.chat.completions.create(
         model="gpt-3.5-turbo",
         messages=[{"role": "user", "content": prompt}],
         temperature=0.8,
         max_tokens=500
     )
 
-    return response['choices'][0]['message']['content']
+    return response.choices[0].message.content
