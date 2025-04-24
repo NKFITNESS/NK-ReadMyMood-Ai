@@ -1,7 +1,7 @@
 import openai
 
-# Most recent working OpenAI API key from user
-openai.api_key = "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"
+# New OpenAI API key provided by user
+openai.api_key = "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"
 
 def generate_story(mood):
     prompts = {
