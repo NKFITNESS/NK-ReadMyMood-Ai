@@ -3,7 +3,8 @@ import requests
 import json
 from story_generator import generate_story  # GPT story gen
 
-FIREBASE_API_KEY = "AlzaSyBVU1M5kTgtN8xOnEeyLjW3km1S7q_m88"
+# Updated Firebase Web API Key
+FIREBASE_API_KEY = "AIzaSyBVU1M5kTgtN8xOnEeyLjlW3km1S7q_m88"
 
 st.set_page_config(page_title="NK ReadMyMood AI", layout="centered")
 
