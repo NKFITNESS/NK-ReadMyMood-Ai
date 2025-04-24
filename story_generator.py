@@ -1,7 +1,7 @@
 import openai
 
-# TEMP KEY – Replace with your real OpenAI API key
-openai.api_key = "sk-..."  # Replace with your actual key
+# Real OpenAI API key — REPLACE this later with your own secure key
+openai.api_key = "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"
 
 def generate_story(mood):
     prompts = {
