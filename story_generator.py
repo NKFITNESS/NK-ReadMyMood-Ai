@@ -1,7 +1,7 @@
 import openai
 
-# TEMP KEY for demo — replace with your own
-openai.api_key = "sk-..."  # Use your own key later
+# TEMP KEY – Replace with your real OpenAI API key
+openai.api_key = "sk-..."  # Replace with your actual key
 
 def generate_story(mood):
     prompts = {
@@ -19,9 +19,7 @@ def generate_story(mood):
 
     prompt = prompts.get(mood, f"Write a story based on mood: {mood}")
 
-    client = openai.OpenAI()
-
-    response = client.chat.completions.create(
+    response = openai.chat.completions.create(
         model="gpt-3.5-turbo",
         messages=[{"role": "user", "content": prompt}],
         temperature=0.8,
