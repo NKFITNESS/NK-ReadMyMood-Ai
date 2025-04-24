@@ -1,6 +1,7 @@
 import streamlit as st
 import requests
 import json
+from story_generator import generate_story  # GPT story gen
 
 FIREBASE_API_KEY = "AlzaSyBVU1M5kTgtN8xOnEeyLjW3km1S7q_m88"
 
@@ -35,12 +36,13 @@ if st.button("Submit"):
         st.error("Authentication failed. Check your credentials.")
 
 if st.session_state.email_token:
-    mood = st.selectbox("How are you feeling today?", [
-        "Happy", "Sad", "Romantic", "Horny", "Comfortable", "Thriller", "Dark", "Motivated", "Fantasy", "Philosophical"
+    st.title("How are you feeling today?")
+    mood = st.selectbox("Select your mood", [
+        "Happy", "Sad", "Romantic", "Horny", "Comfortable",
+        "Thriller", "Dark", "Motivated", "Fantasy", "Philosophical"
     ])
+    
     if st.button("Generate Story"):
         st.markdown(f"### {mood} Mood Story")
-        if mood == "Comfortable":
-            st.write("Lara sat at the kitchen table, hands sticky with cookie dough, her heart full of secret feelings she’d never dare say aloud...")
-        else:
-            st.write(f"This will be an AI-generated story matching the {mood.lower()} vibe. (Coming soon!)")
+        story = generate_story(mood)
+        st.write(story)
