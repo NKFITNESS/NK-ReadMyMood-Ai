@@ -1,49 +1,19 @@
-import streamlit as st
-import requests
-import json
-from story_generator import generate_story  # GPT story gen
-
-# Updated Firebase Web API Key
-FIREBASE_API_KEY = "AIzaSyBVU1M5kTgtN8xOnEeyLjlW3km1S7q_m88"
+import streamlit as st import random
 
 st.set_page_config(page_title="NK ReadMyMood AI", layout="centered")
 
-if "email_token" not in st.session_state:
-    st.session_state.email_token = None
-    st.session_state.email_user = ""
+st.title("NK ReadMyMood AI - Story Generator")
 
-def register_user(email, password):
-    url = f"https://identitytoolkit.googleapis.com/v1/accounts:signUp?key={FIREBASE_API_KEY}"
-    payload = {"email": email, "password": password, "returnSecureToken": True}
-    return requests.post(url, headers={"Content-Type": "application/json"}, data=json.dumps(payload))
+st.write("### How are you feeling today?")
 
-def login_user(email, password):
-    url = f"https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key={FIREBASE_API_KEY}"
-    payload = {"email": email, "password": password, "returnSecureToken": True}
-    return requests.post(url, headers={"Content-Type": "application/json"}, data=json.dumps(payload))
+mood = st.selectbox("Select your mood", ["Happy", "Sad", "Horny", "Comfortable", "Angry"])
 
-st.title("NK ReadMyMood AI - Login")
-auth_choice = st.selectbox("Login or Register", ["Login", "Register"])
-email = st.text_input("Email")
-password = st.text_input("Password", type="password")
+if st.button("Generate Story"): story_bank = { "Happy": [ "Once upon a time, in a village full of sunflowers and sunshine, everyone danced and sang every morning...", "There was a kid who laughed so much that even the birds started mimicking him. His joy spread through the valley." ], "Sad": [ "She watched the last train leave the station, knowing he was never coming back...", "The rain didn’t stop that day, and neither did her tears. But in the distance, a rainbow waited." ], "Horny": [ "They locked eyes across the crowded room, and the tension was electric...", "The way he whispered her name made her skin tingle like poetry on fire." ], "Comfortable": [ "Wrapped in a warm blanket, sipping hot chocolate, she felt the world slow down...", "The sound of the fireplace crackling and the faint hum of music made the night feel perfect." ], "Angry": [ "His fists clenched, teeth gritted—he walked out, knowing this time he wouldn’t come back...", "The storm outside matched the one inside him—unforgiving and wild." ] }
 
-if st.button("Submit"):
-    res = register_user(email, password) if auth_choice == "Register" else login_user(email, password)
-    if res.status_code == 200:
-        st.session_state.email_token = res.json()["idToken"]
-        st.session_state.email_user = res.json()["email"]
-        st.success(f"Logged in as {st.session_state.email_user}")
-    else:
-        st.error("Authentication failed. Check your credentials.")
+if mood in story_bank:
+    story = random.choice(story_bank[mood])
+    st.markdown(f"### {mood} Mood Story")
+    st.write(story)
+else:
+    st.error("Mood not recognized. Please try again.")
 
-if st.session_state.email_token:
-    st.title("How are you feeling today?")
-    mood = st.selectbox("Select your mood", [
-        "Happy", "Sad", "Romantic", "Horny", "Comfortable",
-        "Thriller", "Dark", "Motivated", "Fantasy", "Philosophical"
-    ])
-    
-    if st.button("Generate Story"):
-        st.markdown(f"### {mood} Mood Story")
-        story = generate_story(mood)
-        st.write(story)
